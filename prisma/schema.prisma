@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Utilizador {
+  id                  String   @unique @default(uuid())
+  nome                String
+  email               String   @unique
+  palavra_passe       String
+  telefone            Int      @unique
+  data_nascimento     DateTime
+  autenticado         Type     @default(FALSE)
+  banido              Type     @default(FALSE)
+  codigo_autenticacao String
+  classe              Classe   @default(DECIMA)
+  curso               Curso    @default(INFORMATICA)
+  tipo_utilizador     Tipo     @default(ESTUDANTE)
+
+  create_at DateTime    @default(now())
+  update_at DateTime    @updatedAt()
+  Documento Documento[]
+
+  @@map("utilizador")
+}
+
+model Documento {
+  id                   String         @unique @default(uuid())
+  email                String?
+  nome                 String
+  numero_identificacao String?
+  filicao              String?
+  foto                 String?
+  local                String
+  data                 DateTime
+  descricao            String?
+  telefone             Int
+  tipo_documento       Tipo_Documento
+  achado               Boolean
+  perdido              Boolean
+  publicado            Boolean
+  entregue             Boolean        @default(false)
+  aprovado             Boolean
+
+  utilizador_id Utilizador @relation(fields: [utilizadorId], references: [id])
+  utilizadorId  String
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt()
+
+  @@map("documento")
+}
+
+enum Classe {
+  DECIMA
+  PRIMEIRA
+  SEGUNDA
+  TERCEIRA
+  FUNCIONARIO
+  ADMIN
+
+  @@map("classe")
+}
+
+enum Curso {
+  SETIMA
+  OITAVA
+  NONA
+  INFORMATICA
+  BIOQUIMICA
+  DESENHADOR
+  MAQUINAS
+  ENERGIAS
+  FUNCIONARIO
+  ADMIN
+
+  @@map("curso")
+}
+
+enum Tipo {
+  ADMIN
+  ESTUDANTE
+  FUNCIONARIO
+
+  @@map("tipo")
+}
+
+enum Tipo_Documento {
+  BILHETE_IDENTIDADE
+  CARTA_CONDUCAO
+  LIVRETE
+  PASSAPORTE
+}
+
+enum Type {
+  TRUE
+  FALSE
+
+  @@map("type")
+}
+

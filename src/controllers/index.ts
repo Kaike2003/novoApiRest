@@ -1,0 +1,5 @@
+export * from "./admin/Admin.controller"
+export * from "./estudante/Estudante.controller"
+export * from "./funcionario/Funcionario.controller"
+export * from "./funcionalidades/Funcionalidades.controller"
+export * from "./rotas_publicas/RotasPublicas.controller"
